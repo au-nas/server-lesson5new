@@ -1,1 +1,24 @@
-{"todos" : []}
+{
+  "todos": [
+    {
+      "text": "а",
+      "completed": false,
+      "id": 1
+    },
+    {
+      "text": "п",
+      "completed": false,
+      "id": 2
+    },
+    {
+      "text": "п",
+      "completed": false,
+      "id": 3
+    },
+    {
+      "text": "d",
+      "completed": false,
+      "id": 4
+    }
+  ]
+}

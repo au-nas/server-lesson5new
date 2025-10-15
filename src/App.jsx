@@ -39,13 +39,30 @@ export const App = () => {
 			.then((rawResponce) => rawResponce.json())
 			.then((responce) => {
 				console.log('Дело добавлено, ответ сервера:', responce);
+				setTodos((prevTodos) => [...prevTodos, responce]);
 			});
 	};
 
-//PUT
+	//PUT
+	const requestEditTodo = (id, title) => {
+		const newTitle = title.trim();
 
+		fetch(`http://localhost:3003/todos/${id}`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json;charset=utf-8' },
+			body: JSON.stringify({ title: newTitle }),
+		})
+			.then((responce) => responce.json())
+			.then((editedTodo) => {
+				setTodos((prevTodos) =>
+					prevTodos.map((todo) => (todo.id === id ? editedTodo : todo)),
+				);
+				setNewTodo(''); // очищаем инпут
+			})
+			.catch((err) => console.log('Ошибка', err));
+	};
 
-//DELETE
+	//DELETE
 
 	return (
 		<div>
@@ -59,7 +76,7 @@ export const App = () => {
 					) : (
 						<ul>
 							{todos.map((todo) => (
-								<li key={todo.id}>{todo.title}</li>
+								<li key={todo.id}>{todo.text}</li>
 							))}
 						</ul>
 					)}
@@ -70,7 +87,11 @@ export const App = () => {
 							onChange={(e) => setNewTodo(e.target.value)}
 							placeholder="Введите задачу"
 						></input>
-						<Button type="submit" text="Добавить" className={buttonStyles.add} />
+						<Button
+							type="submit"
+							text="Добавить"
+							className={buttonStyles.add}
+						/>
 					</form>
 				</>
 			)}
