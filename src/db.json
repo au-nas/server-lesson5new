@@ -1,9 +1,14 @@
 {
   "todos": [
     {
-      "text": "помыть",
+      "text": "купить молоко",
       "completed": false,
       "id": 1
+    },
+    {
+      "text": "помыть пол",
+      "completed": false,
+      "id": 2
     }
   ]
 }
