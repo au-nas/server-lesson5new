@@ -5,83 +5,83 @@ export const useRequestTodos = ({ newTodo, setNewTodo, cancelEdit }) => {
 	const [isLoading, setIsLoading] = useState(false); // лоадер
 
 	// GET загружаем тудус с json-server при загрузке страницы
-		useEffect(() => {
-			setIsLoading(true);
+	useEffect(() => {
+		setIsLoading(true);
 
-			fetch('http://localhost:3003/todos')
-				.then((loadedData) => loadedData.json())
-				.then((loadedTodos) => {
-					setTodos(loadedTodos);
-				})
-				.catch((error) => console.log('Ошибка загрузки:', error))
-				.finally(() => setIsLoading(false));
-		}, []);
-
-		// POST создаем тудус
-		const requestAddTodo = (e) => {
-			e.preventDefault();
-
-			const title = newTodo.trim();
-			if (!title) return; // прекращаем выполнение если пустая строка
-
-			fetch('http://localhost:3003/todos', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json;charset=utf-8' },
-				body: JSON.stringify({
-					text: title,
-					completed: false,
-				}),
+		fetch('http://localhost:3003/todos')
+			.then((loadedData) => loadedData.json())
+			.then((loadedTodos) => {
+				console.log('Дела загружены, ответ сервера:', loadedTodos);
+				setTodos(loadedTodos);
 			})
-				.then((rawResponce) => rawResponce.json())
-				.then((responce) => {
-					console.log('Дело добавлено, ответ сервера:', responce);
-					setTodos((prevTodos) => [...prevTodos, responce]); // добавляем задачу
-					setNewTodo('');
-				})
-				.catch((error) => console.log('Ошибка', error));
-		};
+			.catch((error) => console.log('Ошибка загрузки:', error))
+			.finally(() => setIsLoading(false));
+	}, []);
 
-		//PUT
-		const requestEditTodo = (id, title) => {
-			const newTitle = title.trim();
+	// POST создаем тудус
+	const requestAddTodo = (e) => {
+		e.preventDefault();
 
-			fetch(`http://localhost:3003/todos/${id}`, {
-				method: 'PATCH',
-				headers: { 'Content-Type': 'application/json;charset=utf-8' },
-				body: JSON.stringify({ text: newTitle }),
+		const title = newTodo.trim();
+		if (!title) return; // прекращаем выполнение если пустая строка
+
+		fetch('http://localhost:3003/todos', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json;charset=utf-8' },
+			body: JSON.stringify({
+				text: title,
+				completed: false,
+			}),
+		})
+			.then((rawResponce) => rawResponce.json())
+			.then((responce) => {
+				console.log('Дело добавлено, ответ сервера:', responce);
+				setTodos((prevTodos) => [...prevTodos, responce]); // добавляем задачу
+				setNewTodo('');
 			})
-				.then((responce) => responce.json())
-				.then((editedTodo) => {
-					setTodos((prevTodos) =>
-						prevTodos.map((todo) => (todo.id === id ? editedTodo : todo)),
-					);
-					setNewTodo(''); // очищаем инпут
-					cancelEdit();
-				})
-				.catch((err) => console.log('Ошибка', err));
-		};
+			.catch((error) => console.log('Ошибка', error));
+	};
 
-		//DELETE
+	//PUT
+	const requestEditTodo = (id, title) => {
+		const newTitle = title.trim();
 
-		const requestDeleteTodo = (id) => {
-			fetch(`http://localhost:3003/todos/${id}`, {
-				method: 'DELETE',
+		fetch(`http://localhost:3003/todos/${id}`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json;charset=utf-8' },
+			body: JSON.stringify({ text: newTitle }),
+		})
+			.then((responce) => responce.json())
+			.then((editedTodo) => {
+				console.log('Дело изменено, ответ сервера:', editedTodo);
+				setTodos((prevTodos) =>
+					prevTodos.map((todo) => (todo.id === id ? editedTodo : todo)),
+				);
+				setNewTodo(''); // очищаем инпут
+				cancelEdit();
 			})
-				// .then((rawResponce) => rawResponce.json())
-				.then((responce) => {
-					console.log('Дело удалено, ответ сервера:', responce);
-					setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-				})
-				.catch((err) => console.log('Ошибка', err));
-		};
+			.catch((err) => console.log('Ошибка', err));
+	};
 
-		return ({
-			todos,
-			isLoading,
-			requestAddTodo,
-			requestEditTodo,
-			requestDeleteTodo
-		});
+	//DELETE
+
+	const requestDeleteTodo = (id) => {
+		fetch(`http://localhost:3003/todos/${id}`, {
+			method: 'DELETE',
+		})
+			// .then((rawResponce) => rawResponce.json())
+			.then((responce) => {
+				console.log('Дело удалено, ответ сервера:', responce);
+				setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+			})
+			.catch((err) => console.log('Ошибка', err));
+	};
+
+	return {
+		todos,
+		isLoading,
+		requestAddTodo,
+		requestEditTodo,
+		requestDeleteTodo,
+	};
 };
-
-

@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Button } from './components/Button';
+import { Button } from './components/Button/Button';
 import { useRequestTodos } from './hooks/use-request-todos';
-import buttonStyles from './components/Button.module.css';
+import buttonStyles from './components/Button/Button.module.css';
 import appStyles from './App.module.css';
+import { TodoList } from './components/TodoList/TodoList';
 
 export const App = () => {
 	const [newTodo, setNewTodo] = useState(''); // текст нового дела
@@ -29,60 +30,16 @@ export const App = () => {
 				<p>Загрузка...</p>
 			) : (
 				<>
-					{todos.length === 0 ? (
-						<p>Пока нет задач</p>
-					) : (
-						<ul className={appStyles.list}>
-							{todos.map((todo) => (
-								<li key={todo.id} className={appStyles.item}>
-									{/* {editingIdTodo === todo.id && console.log('Editing id:', todo.id)} */}
-									{editingIdTodo === todo.id ? (
-										<>
-											<input
-												id={`edit-todo-${todo.id}`} // уникальный айди
-												name={`edit-todo-${todo.id}`}
-												value={editingInputTextTodo}
-												onChange={(e) =>
-													setEditingInputTextTodo(
-														e.target.value,
-													)
-												}
-											></input>
-											<Button
-												onClick={() =>
-													requestEditTodo(
-														todo.id,
-														editingInputTextTodo,
-													)
-												}
-												className={buttonStyles.save}
-												text="Сохранить"
-											/>
-											<Button
-												onClick={() => cancelEdit()}
-												className={buttonStyles.cancel}
-												text="Отмена"
-											/>
-										</>
-									) : (
-										<>
-											{todo.text}
-											<Button
-												onClick={() => startEdit(todo)}
-												className={buttonStyles.edit}
-												text="Изменить"
-											/>
-											<Button
-												onClick={() => requestDeleteTodo(todo.id)}
-												className={buttonStyles.delete}
-												text="Удалить"
-											/>
-										</>
-									)}
-								</li>
-							))}
-						</ul>
-					)}
+					<TodoList
+						todos={todos}
+						editingIdTodo={editingIdTodo}
+						editingInputTextTodo={editingInputTextTodo}
+						setEditingInputTextTodo={setEditingInputTextTodo}
+						requestEditTodo={requestEditTodo}
+						cancelEdit={cancelEdit}
+						startEdit={startEdit}
+						requestDeleteTodo={requestDeleteTodo}
+					/>
 					{/* форма */}
 					<form
 						onSubmit={requestAddTodo}
