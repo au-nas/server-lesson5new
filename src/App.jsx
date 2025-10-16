@@ -8,6 +8,9 @@ export const App = () => {
 	const [isLoading, setIsLoading] = useState(false); // лоадер
 	const [newTodo, setNewTodo] = useState(''); // текст нового дела
 
+	const [editingIdTodo, setEditingIdTodo] = useState(null); //id дела которое редактируем
+	const [editingTextTodo, setEditingTextTodo] = useState(''); // текст который редактируем
+
 	// GET загружаем тудус с json-server при загрузке страницы
 	useEffect(() => {
 		setIsLoading(true);
@@ -39,7 +42,7 @@ export const App = () => {
 			.then((rawResponce) => rawResponce.json())
 			.then((responce) => {
 				console.log('Дело добавлено, ответ сервера:', responce);
-				setTodos((prevTodos) => [...prevTodos, responce]);
+				setTodos((prevTodos) => [...prevTodos, responce]); // добавляем задачу
 			});
 	};
 
@@ -64,6 +67,18 @@ export const App = () => {
 
 	//DELETE
 
+	const requestDeleteTodo = (id) => {
+		fetch(`http://localhost:3003/todos/${id}`, {
+			method: 'DELETE',
+		})
+			// .then((rawResponce) => rawResponce.json())
+			.then((responce) => {
+				console.log('Дело удалено, ответ сервера:', responce);
+				setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+			})
+			.catch((err) => console.log('Ошибка', err));
+	};
+
 	return (
 		<div>
 			<h1>Список дел</h1>
@@ -74,9 +89,21 @@ export const App = () => {
 					{todos.length === 0 ? (
 						<p>Пока нет задач</p>
 					) : (
-						<ul>
+						<ul className={appStyles.list}>
 							{todos.map((todo) => (
-								<li key={todo.id}>{todo.text}</li>
+								<li key={todo.id} className={appStyles.item}>
+									{todo.text}
+									<Button
+										
+										className={buttonStyles.edit}
+										text="Изменить"
+									/>
+									<Button
+										onClick={() => requestDeleteTodo(todo.id)}
+										className={buttonStyles.delete}
+										text="Удалить"
+									/>
+								</li>
 							))}
 						</ul>
 					)}
@@ -86,6 +113,7 @@ export const App = () => {
 							value={newTodo}
 							onChange={(e) => setNewTodo(e.target.value)}
 							placeholder="Введите задачу"
+							className={appStyles.input}
 						></input>
 						<Button
 							type="submit"
