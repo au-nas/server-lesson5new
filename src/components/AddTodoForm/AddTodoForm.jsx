@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../Button/Button';
+import { Input } from '../Input/Input';
 import buttonStyles from '../Button/Button.module.css';
 import styles from './AddTodoForm.module.css';
 
@@ -15,11 +16,10 @@ export const AddTodoForm = ({ requestAddTodo }) => {
 	return (
 		/* форма */
 		<form onSubmit={handleSubmit} className={styles.form} id="addTodoForm">
-			<input
+			<Input
 				value={newTodo}
 				onChange={(e) => setNewTodo(e.target.value)}
 				placeholder="Введите задачу"
-				className={styles.input}
 			/>
 			<Button type="submit" text="Добавить" className={buttonStyles.add} />
 		</form>

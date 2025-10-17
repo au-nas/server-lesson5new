@@ -1,6 +1,7 @@
 import styles from './TodoItem.module.css';
 import buttonStyles from '../Button/Button.module.css';
 import { Button } from '../Button/Button';
+import { Input } from '../Input/Input';
 
 export const TodoItem = ({
 	todo,
@@ -19,12 +20,11 @@ export const TodoItem = ({
 			{/* {editingIdTodo === todo.id && console.log('Editing id:', todo.id)} */}
 			{isEditing ? (
 				<>
-					<input
+					<Input
 						id={`edit-todo-${todo.id}`} // уникальный айди
 						name={`edit-todo-${todo.id}`}
 						value={editingInputTextTodo}
 						onChange={(e) => setEditingInputTextTodo(e.target.value)}
-						className={styles.input}
 					/>
 					<Button
 						onClick={() => requestEditTodo(todo.id, editingInputTextTodo)}

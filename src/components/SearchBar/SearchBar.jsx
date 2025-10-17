@@ -1,16 +1,15 @@
 import { Button } from '../Button/Button';
+import { Input } from '../Input/Input';
 import buttonStyles from '../Button/Button.module.css';
 import styles from './SearchBar.module.css';
 
 export const SearchBar = ({ search, setSearch, isSorted, setIsSorted }) => {
 	return (
 		<div className={styles.searchContainer}>
-			<input
-				type="text"
+			<Input
 				placeholder="Поиск..."
 				value={search}
 				onChange={(e) => setSearch(e.target.value)}
-				className={styles.input}
 			/>
 			<Button
 				onClick={() => setIsSorted(!isSorted)}
