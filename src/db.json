@@ -4,6 +4,26 @@
       "text": "впавп",
       "completed": false,
       "id": 1
+    },
+    {
+      "text": "помыть пол",
+      "completed": false,
+      "id": 2
+    },
+    {
+      "text": "купить продукты",
+      "completed": false,
+      "id": 3
+    },
+    {
+      "text": "сделать уроки",
+      "completed": false,
+      "id": 4
+    },
+    {
+      "text": "gdd",
+      "completed": false,
+      "id": 5
     }
   ]
 }

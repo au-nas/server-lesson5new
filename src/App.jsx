@@ -3,13 +3,14 @@ import { useRequestTodos } from './hooks/use-request-todos';
 import appStyles from './App.module.css';
 import { TodoList } from './components/TodoList/TodoList';
 import { AddTodoForm } from './components/AddTodoForm/AddTodoForm';
+import { SearchBar } from './components/SearchBar/SearchBar';
 
 export const App = () => {
 	const [editingIdTodo, setEditingIdTodo] = useState(null); //id дела которое редактируем
 	const [editingInputTextTodo, setEditingInputTextTodo] = useState(''); // текст который редактируем
 
-	// const [search, setSearch] = useState('');
-	// const [isSorted, setIsSorted] = useState(false);
+	const [search, setSearch] = useState(''); //текст который вводим для поиска
+	const [isSorted, setIsSorted] = useState(false);
 
 	const startEdit = (todo) => {
 		setEditingIdTodo(todo.id);
@@ -23,13 +24,15 @@ export const App = () => {
 	const { todos, isLoading, requestAddTodo, requestEditTodo, requestDeleteTodo } =
 		useRequestTodos({ cancelEdit });
 
-	// let filteredTodos = todos.filter((todo) =>
-	// 	todo.title.toLowerCase().includes(search.toLowerCase()),
-	// );
+		//фильтрация
+	let filteredTodos = todos.filter((todo) =>
+		todo.text.toLowerCase().includes(search.toLowerCase()),
+	); // оставляем только задачи где todo.text содержит введённый текст search
 
-	// if (isSorted) {
-	// 	filteredTodos = [...filteredTodos].sort((a, b) => a.title.localeCompare(b.title));
-	// }
+	//сортировка если включена true
+	if (isSorted) {
+		filteredTodos = [...filteredTodos].sort((a, b) => a.text.localeCompare(b.text));
+	}
 
 	return (
 		<div className={appStyles.container}>
@@ -39,9 +42,9 @@ export const App = () => {
 				<p>Загрузка...</p>
 			) : (
 				<>
+				<SearchBar search={search} setSearch={setSearch} isSorted={isSorted} setIsSorted={setIsSorted}/>
 					<TodoList
-						// filteredTodos={filteredTodos}
-						todos={todos}
+						todos={filteredTodos}
 						editingIdTodo={editingIdTodo}
 						editingInputTextTodo={editingInputTextTodo}
 						setEditingInputTextTodo={setEditingInputTextTodo}
