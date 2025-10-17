@@ -24,7 +24,8 @@ export const TodoItem = ({
 						name={`edit-todo-${todo.id}`}
 						value={editingInputTextTodo}
 						onChange={(e) => setEditingInputTextTodo(e.target.value)}
-					></input>
+						className={styles.input}
+					/>
 					<Button
 						onClick={() => requestEditTodo(todo.id, editingInputTextTodo)}
 						className={buttonStyles.save}

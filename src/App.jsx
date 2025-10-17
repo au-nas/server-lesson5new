@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Button } from './components/Button/Button';
 import { useRequestTodos } from './hooks/use-request-todos';
-import buttonStyles from './components/Button/Button.module.css';
 import appStyles from './App.module.css';
 import { TodoList } from './components/TodoList/TodoList';
+import { AddTodoForm } from './components/AddTodoForm/AddTodoForm';
 
 export const App = () => {
 	const [newTodo, setNewTodo] = useState(''); // текст нового дела
@@ -40,24 +39,11 @@ export const App = () => {
 						startEdit={startEdit}
 						requestDeleteTodo={requestDeleteTodo}
 					/>
-					{/* форма */}
-					<form
-						onSubmit={requestAddTodo}
-						className={appStyles.form}
-						id="addTodoForm"
-					>
-						<input
-							value={newTodo}
-							onChange={(e) => setNewTodo(e.target.value)}
-							placeholder="Введите задачу"
-							className={appStyles.input}
-						></input>
-						<Button
-							type="submit"
-							text="Добавить"
-							className={buttonStyles.add}
-						/>
-					</form>
+					<AddTodoForm
+						requestAddTodo={requestAddTodo}
+						newTodo={newTodo}
+						setNewTodo={setNewTodo}
+					/>
 				</>
 			)}
 		</div>
