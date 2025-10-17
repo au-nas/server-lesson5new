@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export const useRequestTodos = ({ newTodo, setNewTodo, cancelEdit }) => {
+export const useRequestTodos = ({ cancelEdit }) => {
 	const [todos, setTodos] = useState([]); // все дела
 	const [isLoading, setIsLoading] = useState(false); // лоадер
 
@@ -19,9 +19,7 @@ export const useRequestTodos = ({ newTodo, setNewTodo, cancelEdit }) => {
 	}, []);
 
 	// POST создаем тудус
-	const requestAddTodo = (e) => {
-		e.preventDefault();
-
+	const requestAddTodo = (newTodo) => {
 		const title = newTodo.trim();
 		if (!title) return; // прекращаем выполнение если пустая строка
 
@@ -37,7 +35,6 @@ export const useRequestTodos = ({ newTodo, setNewTodo, cancelEdit }) => {
 			.then((responce) => {
 				console.log('Дело добавлено, ответ сервера:', responce);
 				setTodos((prevTodos) => [...prevTodos, responce]); // добавляем задачу
-				setNewTodo('');
 			})
 			.catch((error) => console.log('Ошибка', error));
 	};
@@ -57,8 +54,7 @@ export const useRequestTodos = ({ newTodo, setNewTodo, cancelEdit }) => {
 				setTodos((prevTodos) =>
 					prevTodos.map((todo) => (todo.id === id ? editedTodo : todo)),
 				);
-				setNewTodo(''); // очищаем инпут
-				cancelEdit();
+				cancelEdit(); // очищает инпут и выходит из редактирования
 			})
 			.catch((err) => console.log('Ошибка', err));
 	};

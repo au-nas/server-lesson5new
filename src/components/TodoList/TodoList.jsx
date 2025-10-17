@@ -2,6 +2,7 @@ import styles from './TodoList.module.css';
 import { TodoItem } from '../TodoItem/TodoItem';
 
 export const TodoList = ({
+	// filteredTodos,
 	todos,
 	editingIdTodo,
 	editingInputTextTodo,
