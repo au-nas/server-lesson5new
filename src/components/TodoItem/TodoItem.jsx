@@ -19,7 +19,7 @@ export const TodoItem = ({
 		<li key={todo.id} className={styles.item}>
 			{/* {editingIdTodo === todo.id && console.log('Editing id:', todo.id)} */}
 			{isEditing ? (
-				<>
+				<div className={styles.editContainer}>
 					<Input
 						id={`edit-todo-${todo.id}`} // уникальный айди
 						name={`edit-todo-${todo.id}`}
@@ -36,7 +36,7 @@ export const TodoItem = ({
 						className={buttonStyles.cancel}
 						text="Отмена"
 					/>
-				</>
+				</div>
 			) : (
 				<>
 					{todo.text}
